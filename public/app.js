@@ -411,6 +411,7 @@
     var bio = bioInfo();
     if (S.authView === 'join') {
       return '<form class="auth" data-auth-form data-kind="join" novalidate>' +
+        '<img class="auth-logo" src="/icon-192.png" alt="">' +
         '<h1 class="page-title">הצטרפות</h1>' +
         '<p class="lead">מכניסים את האימייל ואת הקוד שקיבלתם, ובוחרים סיסמה.</p>' +
         '<label class="field"><span class="field-label">אימייל</span><input class="input" type="email" name="email" autocomplete="username" dir="ltr" required></label>' +
@@ -422,8 +423,9 @@
         '</form>';
     }
     return '<form class="auth" data-auth-form data-kind="login" novalidate>' +
+      '<img class="auth-logo" src="/icon-192.png" alt="">' +
       '<h1 class="page-title">כניסה</h1>' +
-      '<p class="lead">התקציב פתוח רק לבני המשפחה.</p>' +
+      '<p class="lead">התקציב של משפחת מור. פתוח רק לבני המשפחה.</p>' +
       (bio && S.bioAvail ? '<button class="btn btn-primary btn-block" type="button" data-act="bio-login">כניסה עם טביעת אצבע או זיהוי פנים</button>' +
         '<div class="or">או עם סיסמה</div>' : '') +
       '<label class="field"><span class="field-label">אימייל</span><input class="input" type="email" name="email" autocomplete="username" dir="ltr" value="' + esc(bio ? bio.email : '') + '" required></label>' +
