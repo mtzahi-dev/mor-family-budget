@@ -1,288 +1,37 @@
-<!doctype html>
-<html lang="he" dir="rtl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>התקציב של משפחת מור</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=IBM+Plex+Sans+Hebrew:wght@400;500;600&display=swap">
-<style>
-:root{
-  --serif:'Frank Ruhl Libre','David Libre',David,'Times New Roman',serif;
-  --sans:'IBM Plex Sans Hebrew','Arial Hebrew',Arial,system-ui,sans-serif;
-  --bg:#EEF2EF; --surface:#FFFFFF; --ink:#16314B; --ink-2:#4B5E6F; --ink-3:#7D8B97;
-  --line:#D5DDD8; --line-strong:#B6C3BB; --track:#DCE4DF;
-  --hero:#16314B; --hero-ink:#F2F5F3; --hero-ink-2:#B3C2CF; --hero-line:rgba(255,255,255,.18);
-  --fixed:#8FA2B5; --credit:#E8A033; --credit-ink:#8A560A; --credit-soft:#F7E3BC;
-  --surplus:#2E8656; --surplus-hero:#86D9A8; --over:#C0392E; --over-hero:#FF9084; --over-soft:#F9DEDA;
-  --income:#2C5EA8; --income-soft:#DEE7F5; --on-amber:#16314B; --btn:#16314B; --btn-ink:#FFFFFF;
-  --scrim:rgba(9,20,31,.5); --shadow:0 1px 2px rgba(9,20,31,.14);
-  color-scheme:light;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0D161E; --surface:#14202A; --ink:#E5ECF1; --ink-2:#A6B4C0; --ink-3:#7A8B9B;
-    --line:#253440; --line-strong:#3A4D5C; --track:#22303B;
-    --hero:#1A3956; --hero-ink:#F2F5F7; --hero-ink-2:#A9BED0; --hero-line:rgba(255,255,255,.16);
-    --fixed:#7F93A8; --credit:#EFAA40; --credit-ink:#F2B85E; --credit-soft:#3D3019;
-    --surplus:#5BC489; --surplus-hero:#86D9A8; --over:#FF7A6D; --over-hero:#FF9488; --over-soft:#3E2220;
-    --income:#86AEEA; --income-soft:#1F3049; --on-amber:#16314B; --btn:#E5ECF1; --btn-ink:#0D161E;
-    --scrim:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.45);
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0D161E; --surface:#14202A; --ink:#E5ECF1; --ink-2:#A6B4C0; --ink-3:#7A8B9B;
-  --line:#253440; --line-strong:#3A4D5C; --track:#22303B;
-  --hero:#1A3956; --hero-ink:#F2F5F7; --hero-ink-2:#A9BED0; --hero-line:rgba(255,255,255,.16);
-  --fixed:#7F93A8; --credit:#EFAA40; --credit-ink:#F2B85E; --credit-soft:#3D3019;
-  --surplus:#5BC489; --surplus-hero:#86D9A8; --over:#FF7A6D; --over-hero:#FF9488; --over-soft:#3E2220;
-  --income:#86AEEA; --income-soft:#1F3049; --on-amber:#16314B; --btn:#E5ECF1; --btn-ink:#0D161E;
-  --scrim:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.45);
-  color-scheme:dark;
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
-button{font:inherit;color:inherit}
-img,svg{max-width:100%}
-.num{font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
-.wrap{max-width:560px;margin:0 auto;padding:6px 16px 92px}
-
-/* top line */
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 2px 12px}
-.brand{font-family:var(--serif);font-weight:700;font-size:19px;margin:0;line-height:1.2}
-.sync{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2)}
-.sync i{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
-.sync[data-s="live"] i{background:var(--surplus)}
-.sync[data-s="saving"] i{background:var(--credit)}
-.sync[data-s="off"] i,.sync[data-s="ro"] i{background:var(--ink-3)}
-
-/* hero: the month, like a passbook page */
-.hero{background:var(--hero);color:var(--hero-ink);border-radius:22px;padding:14px 16px 18px}
-.hero-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.hero-month{font-family:var(--serif);font-weight:500;font-size:21px;text-align:center;line-height:1.2}
-.hero-month small{display:block;margin-top:3px;font-family:var(--sans);font-size:12.5px;font-weight:500;color:var(--hero-ink-2)}
-.hero-month .today-pill{margin-top:6px}
-.navbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--hero-line);background:transparent;color:var(--hero-ink);display:grid;place-items:center;cursor:pointer;flex:none}
-.navbtn:disabled{opacity:.3;cursor:default}
-.today-pill{display:inline-block;margin-top:4px;background:transparent;border:1px solid var(--hero-line);border-radius:999px;color:var(--hero-ink);font-family:var(--sans);font-size:12px;font-weight:500;padding:2px 10px;cursor:pointer}
-.hero-label{margin:18px 0 0;font-size:15px;font-weight:500;color:var(--hero-ink-2)}
-.hero-num{font-family:var(--serif);font-weight:500;font-size:clamp(54px,17vw,76px);line-height:1;margin:4px 0 8px;letter-spacing:-.01em}
-.hero-num.pos{color:var(--surplus-hero)}
-.hero-num.neg{color:var(--over-hero)}
-.hero-sub{margin:0;font-size:14px;line-height:1.45;color:var(--hero-ink-2);max-width:40ch}
-.strip-cap{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:20px 0 7px;font-size:13px;color:var(--hero-ink-2)}
-.strip-cap b{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--hero-ink)}
-.strip{position:relative;display:flex;gap:2px;height:38px;border-radius:9px;overflow:hidden;background:rgba(255,255,255,.07)}
-.seg{flex:0 1 0;height:100%;min-width:3px;transition:flex-basis .45s ease}
-.seg-fixed,.sw-fixed{background:var(--fixed)}
-.seg-credit,.sw-credit{background:var(--credit)}
-.seg-planned,.sw-planned{background:repeating-linear-gradient(135deg,rgba(232,160,51,.85) 0 3px,rgba(232,160,51,.18) 3px 8px)}
-.seg-surplus,.sw-surplus{background:var(--surplus-hero)}
-.sw-over{background:var(--over-hero)}
-.strip-over{position:absolute;top:0;bottom:0;inset-inline-end:0;border-inline-start:3px solid var(--over-hero);background:repeating-linear-gradient(135deg,rgba(255,144,132,.55) 0 5px,rgba(255,144,132,.12) 5px 10px)}
-.legend{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin:14px 0 0}
-.legend div{min-width:0}
-.legend dt{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--hero-ink-2);line-height:1.3}
-.legend dd{margin:2px 0 0;padding-inline-start:17px;font-family:var(--serif);font-weight:500;font-size:18px;line-height:1.2}
-.sw{width:10px;height:10px;border-radius:3px;flex:none}
-
-/* banners */
-.banner{background:var(--surface);border:1px solid var(--line);border-inline-start:4px solid var(--income);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--ink-2);margin:0 0 12px}
-
-/* sections */
-.sec{margin-top:30px}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
-.sec-head h2,.page-title{font-family:var(--serif);font-weight:700;font-size:23px;line-height:1.2;margin:0}
-.sec-total{font-family:var(--serif);font-weight:500;font-size:19px;white-space:nowrap}
-.sec-total small{font-family:var(--sans);font-size:13px;color:var(--ink-2);font-weight:400}
-.sec-note{font-size:13px;color:var(--ink-2);margin:8px 0 0}
-.sub{font-size:14px;font-weight:600;color:var(--ink-2);margin:18px 0 0}
-
-/* credit cards */
-.cards,.ledger,.hist,.log{list-style:none;margin:0;padding:0}
-.cr{display:grid;grid-template-columns:1fr auto;align-items:center;gap:9px 12px;padding:16px 0;border-bottom:1px solid var(--line)}
-.cr-name{font-weight:600;font-size:17px;line-height:1.3}
-.cr-amt{font-family:var(--serif);font-weight:500;font-size:23px;line-height:1.1;text-align:end}
-.cr-amt small{display:block;font-family:var(--sans);font-size:12.5px;font-weight:400;color:var(--ink-2)}
-.cr-bar{grid-column:1/-1}
-.cr-meta{display:flex;flex-wrap:wrap;gap:3px 14px;font-size:13.5px;color:var(--ink-2);line-height:1.4}
-.cr-meta .upd{color:var(--ink-3)}
-.st-over{color:var(--over);font-weight:600}
-.st-ahead{color:var(--credit-ink);font-weight:600}
-.st-warn{color:var(--credit-ink)}
-.bar{position:relative;display:flex;gap:2px;height:10px;border-radius:5px;background:var(--track)}
-.bar-in{height:100%;background:var(--credit);border-radius:5px;transition:width .45s ease}
-.bar-over{height:100%;background:var(--over);border-radius:5px}
-.bar-tick{position:absolute;top:-5px;bottom:-5px;width:2px;margin-inline-start:-1px;background:var(--ink);border-radius:1px}
-.btn-amber{min-height:42px;padding:0 20px;border-radius:999px;border:0;background:var(--credit);color:var(--on-amber);font-weight:600;cursor:pointer;white-space:nowrap}
-.btn-amber:disabled{opacity:.45;cursor:default}
-
-/* ledger rows */
-.ledger li{border-bottom:1px solid var(--line)}
-.row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;min-height:48px;background:none;border:0;text-align:start}
-button.row{cursor:pointer}
-button.row:disabled{cursor:default}
-.row-name{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;line-height:1.35}
-.row-amt{display:flex;align-items:center;gap:8px;font-weight:500;white-space:nowrap}
-.row-amt s{color:var(--ink-3);font-weight:400}
-.row-amt svg{color:var(--ink-3)}
-.tag{font-size:12px;font-weight:500;padding:1px 8px;border-radius:999px;background:var(--income-soft);color:var(--income)}
-.btn-ghost{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:6px;padding:0;background:none;border:0;color:var(--income);font-weight:600;cursor:pointer}
-.empty-line{padding:12px 0;color:var(--ink-3);font-size:14px;border-bottom:1px solid var(--line)}
-
-/* history */
-.hrow{width:100%;display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:15px 0;background:none;border:0;border-bottom:1px solid var(--line);text-align:start;cursor:pointer}
-.h-month{font-weight:600;font-size:16.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.h-gap{font-family:var(--serif);font-weight:500;font-size:21px;text-align:end;line-height:1.15}
-.h-gap small{display:block;font-family:var(--sans);font-size:12px;font-weight:400;color:var(--ink-2)}
-.h-gap.pos .num{color:var(--surplus)} .h-gap.neg .num{color:var(--over)}
-.h-bar{grid-column:1/-1}
-.h-meta{grid-column:1/-1;font-size:13.5px;color:var(--ink-2)}
-.summary{margin:12px 0 0;font-size:14px;color:var(--ink-2)}
-
-/* plan */
-.lead{color:var(--ink-2);font-size:15px;margin:8px 0 0;max-width:46ch}
-.pg{margin-top:28px}
-.pg-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:7px;border-bottom:2px solid var(--ink)}
-.pg-head h2{font-family:var(--serif);font-weight:700;font-size:20px;margin:0}
-.pg-total{font-family:var(--serif);font-weight:500;font-size:18px}
-.pg-desc{font-size:13.5px;color:var(--ink-2);margin:6px 0 2px}
-.prow{display:grid;grid-template-columns:minmax(0,1fr) 112px 40px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
-.input{width:100%;font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);min-height:44px}
-.input::placeholder{color:var(--ink-3)}
-.input[aria-invalid="true"]{border-color:var(--over);box-shadow:0 0 0 1px var(--over)}
-.input.amt{text-align:left;font-variant-numeric:tabular-nums}
-.cycle-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
-.cycle-row .input{width:76px;text-align:center;font-variant-numeric:tabular-nums}
-.icon-btn{width:40px;height:40px;border-radius:10px;border:0;background:transparent;color:var(--ink-3);display:grid;place-items:center;cursor:pointer}
-.plan-bar{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom,0px));margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.plan-gap{font-size:14px;color:var(--ink-2);line-height:1.3}
-.plan-gap b{display:block;font-family:var(--serif);font-weight:500;font-size:22px;color:var(--ink)}
-.plan-actions{display:flex;gap:8px}
-
-/* buttons */
-.btn{min-height:46px;padding:0 18px;border-radius:12px;border:1px solid transparent;font-weight:600;cursor:pointer}
-.btn:disabled{opacity:.45;cursor:default}
-.btn-primary{background:var(--btn);color:var(--btn-ink)}
-.btn-quiet{background:transparent;border-color:var(--line-strong);color:var(--ink)}
-.btn-danger{background:transparent;border-color:var(--over);color:var(--over)}
-.btn-block{width:100%;margin-top:10px}
-
-/* empty / loading */
-.empty{padding:40px 6px;text-align:center}
-.empty h2{font-family:var(--serif);font-weight:700;font-size:24px;margin:0 0 8px}
-.empty p{color:var(--ink-2);margin:0 auto 18px;max-width:34ch}
-
-/* tab bar */
-.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:5px 8px calc(5px + env(safe-area-inset-bottom,0px));overflow:hidden}
-.tabbar-in{display:grid;grid-template-columns:repeat(3,1fr);max-width:560px;margin:0 auto}
-.tab{display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 0;min-height:50px;background:none;border:0;font-size:12.5px;color:var(--ink-3);cursor:pointer;position:relative}
-.tab[aria-current="page"]{color:var(--ink);font-weight:600}
-.tab[aria-current="page"]::before{content:"";position:absolute;top:-6px;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px;background:var(--credit)}
-.tab .dot{position:absolute;top:4px;inset-inline-end:34%;width:7px;height:7px;border-radius:50%;background:var(--credit)}
-
-/* sheet */
-dialog.sheet{border:0;padding:0;margin:auto auto 0;width:100%;max-width:560px;max-height:90vh;max-height:90dvh;border-radius:22px 22px 0 0;background:var(--surface);color:var(--ink);overflow:hidden}
-dialog.sheet::backdrop{background:var(--scrim)}
-.sheet-body{padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px));max-height:90vh;max-height:90dvh;overflow:auto}
-.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.sheet-head h2{font-family:var(--serif);font-weight:700;font-size:23px;margin:0;line-height:1.2}
-.sheet-head p{margin:3px 0 0;font-size:14px;color:var(--ink-2)}
-.x{width:40px;height:40px;border-radius:50%;border:0;background:var(--bg);color:var(--ink-2);display:grid;place-items:center;cursor:pointer;flex:none}
-.segctl{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--bg);border-radius:12px;padding:3px;margin-top:16px}
-.segctl button{min-height:40px;border:0;border-radius:9px;background:transparent;font-weight:500;font-size:15px;color:var(--ink-2);cursor:pointer}
-.segctl button[aria-pressed="true"]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:var(--shadow)}
-.field{display:block;margin-top:16px}
-.field-label{display:block;font-size:14.5px;color:var(--ink-2);margin-bottom:6px}
-.input-amt{font-family:var(--serif);font-size:34px;font-weight:500;padding:8px 14px;text-align:right;min-height:62px}
-.field-err{min-height:1.2em;margin:6px 0 0;font-size:13.5px;color:var(--over)}
-.preview{margin:2px 0 0;font-size:14.5px;color:var(--ink-2);line-height:1.5}
-.hint{font-size:13px;color:var(--ink-3);margin:12px 0 0}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.chip{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line-strong);background:transparent;font-size:14px;cursor:pointer;color:var(--ink)}
-.sheet-sub{font-size:14px;font-weight:600;color:var(--ink-2);margin:22px 0 4px}
-.log-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px}
-.log-row span:first-child{color:var(--ink-2);flex:1}
-.link-danger{background:none;border:0;color:var(--over);font-size:13.5px;font-weight:500;min-height:36px;padding:0 4px;cursor:pointer}
-.link-danger[data-armed="1"]{font-weight:700;text-decoration:underline}
-
-/* toast */
-.toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);opacity:0;pointer-events:none;background:var(--btn);color:var(--btn-ink);padding:10px 16px;border-radius:12px;font-size:14.5px;font-weight:500;max-width:calc(100% - 32px);width:max-content;z-index:60;transition:opacity .2s ease,transform .2s ease;text-align:center}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-
-:focus-visible{outline:3px solid var(--income);outline-offset:2px}
-.hero :focus-visible{outline-color:var(--hero-ink)}
-@media (prefers-reduced-motion: no-preference){
-  dialog.sheet[open]{animation:sheet-up .22s ease-out}
-  @keyframes sheet-up{from{transform:translateY(28px);opacity:.5}to{transform:none;opacity:1}}
-}
-@media (prefers-reduced-motion: reduce){
-  .seg,.bar-in,.toast{transition:none}
-}
-@media (min-width:600px){
-  .wrap{padding-top:18px}
-  dialog.sheet{border-radius:22px;margin:auto;max-height:80vh}
-}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="top">
-    <h1 class="brand">התקציב של משפחת מור</h1>
-    <div class="sync" id="sync" data-s="wait" role="status" aria-live="polite"><i></i><span>מתחבר…</span></div>
-  </header>
-  <main id="app"></main>
-</div>
-
-<nav class="tabbar" aria-label="ניווט">
-  <div class="tabbar-in">
-    <button class="tab" data-act="tab" data-tab="month" aria-current="page">
-      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>
-      <span>החודש</span>
-    </button>
-    <button class="tab" data-act="tab" data-tab="history">
-      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg>
-      <span>היסטוריה</span>
-    </button>
-    <button class="tab" data-act="tab" data-tab="plan">
-      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
-      <span>תכנון</span>
-    </button>
-  </div>
-</nav>
-
-<dialog class="sheet" id="sheet" aria-labelledby="sheet-title"></dialog>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<script>
+// The page logic. The budget math lives in core.js (window.BudgetCore), shared with the server.
 (function () {
   'use strict';
 
   /* ---------- constants & state ---------- */
-  var HE_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-  var CACHE_KEY = 'mor-budget-cache-v1';
-  var LOG_CAP = 80;
+  var C = window.BudgetCore;   // the budget math, shared with the server (core.js)
+  var keyOf = C.keyOf, parts = C.parts, shift = C.shift, mName = C.mName, mLabel = C.mLabel;
+  var sum = C.sum, arr = C.arr, isNum = C.isNum, sortedLog = C.sortedLog;
+  var CACHE_KEY = 'mor-budget-cache-v2';
+  var TOKEN_KEY = 'mor-budget-token';
+  var BIO_KEY = 'mor-budget-bio';          // { email, id } once this device signs in with a passkey
+  var BIO_SKIP_KEY = 'mor-budget-bio-skip';
+  var POLL_MS = 15000;
+  var IDLE_MS = 5 * 60000;                  // stop polling after 5 minutes without a touch
   var nf = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
   var nf2 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
   var S = {
-    db: null,
-    status: 'connecting',   // connecting | live | nodb | revoked
-    canWrite: null,         // true | false | null (platform said nothing)
-    refused: false,         // a write was refused for lack of access
+    status: 'connecting',   // auth (signed out) | connecting | live | offline (cached copy, read only)
+    token: null,
+    user: null,             // { email, role, passkeys }
+    rev: null,              // server version of the data, for cheap polling
     plan: null,
     months: {},
     tab: 'month',
     monthKey: keyOf(new Date()),
     followCur: true,        // the month view tracks the active credit cycle
     draft: null,
-    pending: 0
+    pending: 0,
+    authView: 'login',      // login | join
+    bioAvail: false,        // this device has a fingerprint / face sensor for passkeys
+    push: null,             // unsupported | ios-home | denied | on | off
+    members: null,          // owner only: the family list
+    newCode: null           // owner only: { email, code, exp } just issued
   };
 
   var ICON = {
@@ -296,37 +45,12 @@ dialog.sheet::backdrop{background:var(--scrim)}
 
   /* ---------- small helpers ---------- */
   function $(s, r) { return (r || document).querySelector(s); }
-  function keyOf(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
-  function parts(k) { var p = k.split('-'); return { y: +p[0], m: +p[1] }; }
-  function shift(k, n) { var p = parts(k); return keyOf(new Date(p.y, p.m - 1 + n, 1)); }
-  function mName(k) { return HE_MONTHS[parts(k).m - 1]; }
-  function mLabel(k) { return mName(k) + ' ' + parts(k).y; }
-  function daysIn(k) { var p = parts(k); return new Date(p.y, p.m, 0).getDate(); }
-  function today0() { var t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
-  function dm(d) { return d.getDate() + '.' + (d.getMonth() + 1); }
-  // Credit cycle: charges reset on day D. Budget month k carries the cycle that
-  // ends on day D-1 of k (it is charged in k): D of (k-1) through D-1 of k.
-  // D = 1 means the plain calendar month.
-  function cycleDay() {
-    var d = S.plan ? Math.floor(Number(S.plan.cycleDay)) : NaN;
-    return (d >= 2 && d <= 28) ? d : 1;
-  }
-  function cycleOf(k) {
-    var D = cycleDay(), p = parts(k), start, end;
-    if (D === 1) { start = new Date(p.y, p.m - 1, 1); end = new Date(p.y, p.m, 0); }
-    else { start = new Date(p.y, p.m - 2, D); end = new Date(p.y, p.m - 1, D - 1); }
-    return { start: start, end: end, len: Math.round((end - start) / 864e5) + 1 };
-  }
-  function cycleText(k) { var c = cycleOf(k); return dm(c.start) + '–' + dm(c.end); }
+  function cycleDay() { return C.cycleDay(S.plan); }
+  function cycleOf(k) { return C.cycleOf(S.plan, k); }
+  function cycleText(k) { return C.cycleText(S.plan, k); }
   // the budget month whose credit cycle is running today
-  function curKey() {
-    var t = new Date(), D = cycleDay();
-    return (D > 1 && t.getDate() >= D) ? shift(keyOf(t), 1) : keyOf(t);
-  }
-  function sum(a) { var s = 0; for (var i = 0; i < a.length; i++) s += Number(a[i]) || 0; return s; }
+  function curKey() { return C.curKey(S.plan, new Date()); }
   function clone(x) { return x == null ? x : JSON.parse(JSON.stringify(x)); }
-  function arr(a) { return Array.isArray(a) ? a.filter(function (x) { return x && typeof x === 'object'; }) : []; }
-  function isNum(v) { return typeof v === 'number' && isFinite(v); }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -367,93 +91,24 @@ dialog.sheet::backdrop{background:var(--scrim)}
   }
 
   /* ---------- access ---------- */
-  function canAct() { return S.status === 'live' && !S.refused && S.canWrite !== false; }
+  function canAct() { return S.status === 'live'; }
   function ctl() { return canAct() ? 'edit' : (S.status === 'connecting' ? 'wait' : 'ro'); }
 
-  /* ---------- plan & month math ---------- */
-  function versionKeys() {
-    var v = S.plan && S.plan.versions;
-    if (!v || typeof v !== 'object') return [];
-    return Object.keys(v).filter(function (k) { return v[k] && typeof v[k] === 'object'; }).sort();
-  }
-  function firstKey() { var ks = versionKeys(); return ks.length ? ks[0] : curKey(); }
-  function planFor(k) {
-    var ks = versionKeys(); if (!ks.length) return null;
-    var from = ks[0];
-    for (var i = 0; i < ks.length; i++) if (ks[i] <= k) from = ks[i];
-    var p = S.plan.versions[from];
-    return { from: from, income: arr(p.income), fixed: arr(p.fixed), cards: arr(p.cards) };
-  }
-  function sortedLog(md, id) {
-    var c = md && md.cards && md.cards[id];
-    var log = c && Array.isArray(c.log) ? c.log.filter(function (e) { return e && isNum(e.a) && typeof e.t === 'string'; }) : [];
-    return log.map(function (e) { return { t: e.t, a: e.a }; }).sort(function (a, b) { return a.t < b.t ? -1 : a.t > b.t ? 1 : 0; });
-  }
-  function compute(k) {
-    var plan = planFor(k); if (!plan) return null;
-    var md = S.months[k] || {};
-    var nk = curKey();
-    var phase = k < nk ? 'past' : (k > nk ? 'future' : 'current');
-    var cyc = cycleOf(k);
-    var dim = cyc.len;
-    var day = phase === 'current' ? Math.min(dim, Math.max(1, Math.round((today0() - cyc.start) / 864e5) + 1)) : (phase === 'past' ? dim : 0);
-    var dayFrac = day / dim;
-    var ov = (md.income && typeof md.income === 'object') ? md.income : {};
-
-    var income = plan.income.map(function (it) {
-      var base = Number(it.amount) || 0, o = ov[it.id], has = isNum(o);
-      return { id: it.id, name: it.name, base: base, value: has ? o : base, changed: has && o !== base };
-    });
-    var extras = arr(md.extras).filter(function (x) { return isNum(x.amount); });
-    var incomeTotal = sum(income.map(function (i) { return i.value; })) + sum(extras.map(function (x) { return x.amount; }));
-    var fixed = plan.fixed.map(function (f) { return { id: f.id, name: f.name, amount: Number(f.amount) || 0 }; });
-    var fixedTotal = sum(fixed.map(function (f) { return f.amount; }));
-
-    var cards = plan.cards.map(function (c) {
-      var budget = Number(c.budget) || 0;
-      var log = sortedLog(md, c.id);
-      var last = log.length ? log[log.length - 1] : null;
-      var actual = last ? last.a : null;
-      var spent = actual == null ? 0 : actual;
-      var counted = phase === 'past' ? (actual == null ? budget : actual) : Math.max(spent, budget);
-      var expected = budget * dayFrac;
-      var st = 'ok';
-      if (actual == null) st = 'none';
-      else if (spent > budget) st = 'over';
-      else if (phase === 'current' && spent > expected + budget * 0.05) st = 'ahead';
-      return { id: c.id, name: c.name, budget: budget, log: log, last: last, actual: actual, spent: spent,
-               counted: counted, expected: expected, st: st,
-               over: Math.max(0, spent - budget), remaining: Math.max(0, budget - spent) };
-    });
-
-    var creditSpent = sum(cards.map(function (c) { return c.spent; }));
-    var creditBudget = sum(cards.map(function (c) { return c.budget; }));
-    var creditCounted = sum(cards.map(function (c) { return c.counted; }));
-    var expenses = fixedTotal + creditCounted;
-    return {
-      k: k, phase: phase, dim: dim, day: day, dayFrac: dayFrac, cyc: cyc,
-      income: income, extras: extras, incomeTotal: incomeTotal,
-      fixed: fixed, fixedTotal: fixedTotal, cards: cards,
-      creditSpent: creditSpent, creditBudget: creditBudget, creditCounted: creditCounted,
-      creditPlanned: Math.max(0, creditCounted - creditSpent),
-      expenses: expenses, gap: incomeTotal - expenses,
-      overTotal: sum(cards.map(function (c) { return c.over; })),
-      unknown: cards.filter(function (c) { return c.actual == null; })
-    };
-  }
+  /* ---------- plan & month math (core.js) ---------- */
+  function versionKeys() { return C.versionKeys(S.plan); }
+  function firstKey() { return C.firstKey(S.plan, new Date()); }
+  function planFor(k) { return C.planFor(S.plan, k); }
+  function compute(k) { return C.compute(S.plan, S.months, k, new Date()); }
 
   /* ---------- views ---------- */
   function banner() {
-    if (S.status === 'nodb' && S.plan) return '<div class="banner">תצוגה בלבד, לפי הנתונים האחרונים שנשמרו במכשיר הזה. כדי לעדכן, פתחו את הדף מתוך Claude.</div>';
-    if (S.status === 'revoked') return '<div class="banner">הדף פתוח כרגע לקריאה בלבד.</div>';
-    if (S.status === 'live' && (S.canWrite === false || S.refused)) return '<div class="banner">יש לך הרשאת צפייה בלבד, ולכן אי אפשר לעדכן מכאן.</div>';
+    if (S.status === 'offline') return '<div class="banner">אין חיבור לשרת. מוצגים הנתונים האחרונים שנשמרו במכשיר הזה, ואפשר יהיה לעדכן כשהחיבור יחזור.</div>';
     return '';
   }
 
   function viewEmpty() {
     if (S.status === 'connecting') return '<div class="empty"><h2>טוען את התקציב…</h2></div>';
-    if (S.status === 'nodb') return '<div class="empty"><h2>הנתונים שמורים בחשבון</h2><p>כדי לראות ולעדכן את התקציב, פתחו את הדף מתוך Claude כשאתם מחוברים לחשבון.</p></div>';
-    if (S.status === 'revoked') return '<div class="empty"><h2>אין נתונים להצגה</h2><p>הדף פתוח כרגע לקריאה בלבד.</p></div>';
+    if (S.status === 'offline') return '<div class="empty"><h2>אין חיבור לשרת</h2><p>בודקים את החיבור לאינטרנט, והתקציב ייטען לבד כשהחיבור יחזור.</p></div>';
     return '<div class="empty"><h2>עוד לא הוגדר תכנון</h2><p>מתחילים מהכנסות, הוצאות קבועות וכרטיסי אשראי, ומשם מחושב הפער בכל חודש.</p>' +
       (canAct() ? '<button class="btn btn-primary" data-act="tab" data-tab="plan">הגדרת התכנון</button>' : '') + '</div>';
   }
@@ -739,7 +394,7 @@ dialog.sheet::backdrop{background:var(--scrim)}
     Object.keys(versions).forEach(function (k) { if (k > d.from) delete versions[k]; });
     versions[d.from] = out;
     var btn = $('[data-act="plan-save"]'); if (btn) btn.disabled = true;
-    var ok = await writeDoc('budget/plan', null, { versions: versions, cycleDay: cd, updatedAt: new Date().toISOString() });
+    var ok = await writeDoc('budget/plan', null, { patch: { versions: versions, cycleDay: cd, updatedAt: new Date().toISOString() } });
     if (ok) { S.draft = null; toast('התכנון נשמר'); render(true); }
     else refreshPlanTotals();
   }
@@ -749,13 +404,118 @@ dialog.sheet::backdrop{background:var(--scrim)}
     toast(msg);
   }
 
+  /* ---------- sign-in ---------- */
+  function viewAuth() {
+    var bio = bioInfo();
+    if (S.authView === 'join') {
+      return '<form class="auth" data-auth-form data-kind="join" novalidate>' +
+        '<h1 class="page-title">הצטרפות</h1>' +
+        '<p class="lead">מכניסים את האימייל ואת הקוד שקיבלתם, ובוחרים סיסמה.</p>' +
+        '<label class="field"><span class="field-label">אימייל</span><input class="input" type="email" name="email" autocomplete="username" dir="ltr" required></label>' +
+        '<label class="field"><span class="field-label">קוד הצטרפות</span><input class="input input-code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr" required></label>' +
+        '<label class="field"><span class="field-label">סיסמה חדשה (8 תווים לפחות)</span><input class="input" type="password" name="password" autocomplete="new-password" dir="ltr" required></label>' +
+        '<p class="field-err" data-err role="alert"></p>' +
+        '<button class="btn btn-primary btn-block" type="submit">הצטרפות</button>' +
+        '<button class="btn-ghost" type="button" data-act="auth-view" data-view="login">כבר יש לי סיסמה</button>' +
+        '</form>';
+    }
+    return '<form class="auth" data-auth-form data-kind="login" novalidate>' +
+      '<h1 class="page-title">כניסה</h1>' +
+      '<p class="lead">התקציב פתוח רק לבני המשפחה.</p>' +
+      (bio && S.bioAvail ? '<button class="btn btn-primary btn-block" type="button" data-act="bio-login">כניסה עם טביעת אצבע או זיהוי פנים</button>' +
+        '<div class="or">או עם סיסמה</div>' : '') +
+      '<label class="field"><span class="field-label">אימייל</span><input class="input" type="email" name="email" autocomplete="username" dir="ltr" value="' + esc(bio ? bio.email : '') + '" required></label>' +
+      '<label class="field"><span class="field-label">סיסמה</span><input class="input" type="password" name="password" autocomplete="current-password" dir="ltr" required></label>' +
+      '<p class="field-err" data-err role="alert"></p>' +
+      '<button class="btn ' + (bio && S.bioAvail ? 'btn-quiet' : 'btn-primary') + ' btn-block" type="submit">כניסה</button>' +
+      '<button class="btn-ghost" type="button" data-act="auth-view" data-view="join">קיבלתי קוד הצטרפות</button>' +
+      '<p class="fine">שכחתם את הסיסמה? מי שמנהל את האפליקציה יכול לתת לכם קוד חדש מלשונית ההגדרות.</p>' +
+      '</form>';
+  }
+
+  /* ---------- settings ---------- */
+  function viewSettings() {
+    var u = S.user || {}, bio = bioInfo(), bioOn = !!(bio && bio.email === u.email);
+    var html = '<div data-settings><h1 class="page-title">הגדרות</h1>' +
+      (u.email ? '<p class="lead">מחוברים בתור <span dir="ltr">' + esc(u.email) + '</span></p>' : '');
+
+    // biometrics
+    html += '<section class="sec" aria-labelledby="h-bio"><div class="sec-head"><h2 id="h-bio">כניסה ביומטרית</h2></div>';
+    if (!S.bioAvail) {
+      html += '<p class="set-text">המכשיר הזה לא תומך בכניסה עם טביעת אצבע או זיהוי פנים.</p>';
+    } else {
+      html += '<div class="set-state" data-on="' + (bioOn ? 1 : 0) + '"><i></i>' + (bioOn ? 'פעילה במכשיר הזה' : 'כבויה במכשיר הזה') + '</div>' +
+        '<p class="set-text">' + (bioOn ? 'בכל פתיחה של האפליקציה תתבקשו לאשר עם טביעת אצבע או זיהוי פנים.'
+          : 'נכנסים בלי סיסמה, עם טביעת אצבע או זיהוי פנים. אחרי ההפעלה האפליקציה תבקש אותם בכל פתיחה במכשיר הזה.') + '</p>' +
+        '<div class="set-actions">' + (bioOn ? '<button class="btn btn-quiet btn-small" data-act="bio-off">כיבוי</button>'
+          : '<button class="btn btn-primary btn-small" data-act="bio-on">הפעלה במכשיר הזה</button>') + '</div>';
+    }
+    var keys = u.passkeys || [];
+    if (keys.length) {
+      html += '<h3 class="sub">מכשירים עם כניסה ביומטרית</h3><ul class="ledger">' + keys.map(function (k) {
+        var here = bio && bio.id === k.id;
+        return '<li class="mem"><span class="mem-mail">' + (here ? 'המכשיר הזה' : 'מכשיר אחר') + '</span>' +
+          '<span class="mem-meta">נוסף ' + esc(relTime(k.at)) + (k.used ? ' · כניסה אחרונה ' + esc(relTime(k.used)) : '') + '</span>' +
+          '<span class="mem-acts"><button class="link-danger" data-act="pk-remove" data-id="' + esc(k.id) + '">הסרה</button></span></li>';
+      }).join('') + '</ul><p class="hint">טלפון שאבד? מסירים אותו מכאן, ואז אי אפשר להיכנס ממנו עם טביעת אצבע.</p>';
+    }
+    html += '</section>';
+
+    // notifications
+    var st = S.push, msg = S.plan ? C.statusMessage(S.plan, S.months, new Date()) : null;
+    html += '<section class="sec" aria-labelledby="h-push"><div class="sec-head"><h2 id="h-push">התראות</h2></div>' +
+      '<p class="set-text">כל 3 ימים ב-19:00 נשלחת התראה עם מצב החודש: כמה נשאר עד תקרת האשראי או כמה חרגתם, הצפי לסוף החודש, ותזכורת אם האשראי לא עודכן כמה ימים.</p>';
+    if (st === 'unsupported') html += '<p class="set-text">הדפדפן הזה לא תומך בהתראות. בטלפון אנדרואיד פותחים ב-Chrome.</p>';
+    else if (st === 'ios-home') html += '<p class="notice"><b>באייפון צריך קודם להוסיף את האפליקציה למסך הבית</b>בספארי לוחצים על כפתור השיתוף, בוחרים "הוספה למסך הבית", ופותחים את האפליקציה מהאייקון החדש. משם אפשר להפעיל התראות.</p>';
+    else if (st === 'denied') html += '<p class="set-text">ההתראות חסומות בדפדפן. כדי להפעיל אותן צריך לאשר התראות לאתר הזה בהגדרות הדפדפן.</p>';
+    else if (st === 'on' || st === 'off') {
+      html += '<div class="set-state" data-on="' + (st === 'on' ? 1 : 0) + '"><i></i>' + (st === 'on' ? 'פעילות במכשיר הזה' : 'כבויות במכשיר הזה') + '</div>' +
+        '<div class="set-actions">' + (st === 'on'
+          ? '<button class="btn btn-quiet btn-small" data-act="push-test">שליחת התראת ניסיון</button><button class="btn btn-quiet btn-small" data-act="push-off">כיבוי</button>'
+          : '<button class="btn btn-primary btn-small" data-act="push-on">הפעלת התראות במכשיר הזה</button>') + '</div>';
+    }
+    if (msg) html += '<div class="notice"><b>' + esc(msg.title) + '</b><p>' + esc(msg.body) + '</p></div><p class="hint">כך הייתה נראית ההתראה אם הייתה נשלחת עכשיו.</p>';
+    html += '</section>';
+
+    // family (owner)
+    if (u.role === 'owner') {
+      html += '<section class="sec" aria-labelledby="h-fam"><div class="sec-head"><h2 id="h-fam">בני המשפחה</h2></div>' +
+        '<p class="set-text">מי שברשימה יכול לראות ולעדכן את התקציב. מוסיפים אימייל, ושולחים לאותו אדם את הקוד שמופיע ואת הכתובת של האפליקציה.</p>';
+      if (!S.members) html += '<p class="set-text">טוען…</p>';
+      else {
+        html += '<ul class="ledger">' + S.members.map(function (m) {
+          var meta = m.role === 'owner' ? 'מנהל' : (m.joined ? 'מחובר' : (m.invite ? 'ממתין להצטרפות' : 'הקוד פג, צריך קוד חדש'));
+          if (m.passkeys) meta += ' · כניסה ביומטרית';
+          var self = m.email === u.email;
+          return '<li class="mem"><span class="mem-mail" dir="ltr">' + esc(m.email) + '</span><span class="mem-meta">' + meta + '</span>' +
+            (self ? '' : '<span class="mem-acts"><button class="btn btn-quiet btn-small" data-act="mem-code" data-email="' + esc(m.email) + '">קוד חדש</button>' +
+              '<button class="link-danger" data-act="mem-remove" data-email="' + esc(m.email) + '">הסרה</button></span>') + '</li>';
+        }).join('') + '</ul>';
+      }
+      if (S.newCode) {
+        html += '<div class="code-box" role="status">הקוד של <span dir="ltr">' + esc(S.newCode.email) + '</span>:' +
+          '<span class="code" dir="ltr">' + esc(S.newCode.code) + '</span>' +
+          'שלחו את הקוד ואת הכתובת <span dir="ltr">' + esc(location.origin) + '</span>. בכניסה בוחרים "קיבלתי קוד הצטרפות". הקוד תקף לשבוע ולשימוש אחד.</div>';
+      }
+      html += '<form class="add-row" data-add-member novalidate><input class="input" type="email" name="email" placeholder="אימייל" aria-label="אימייל של בן משפחה" dir="ltr" autocomplete="off">' +
+        '<button class="btn btn-primary btn-small" type="submit">הוספה</button></form><p class="field-err" data-err role="alert"></p></section>';
+    }
+
+    // account
+    html += '<section class="sec" aria-labelledby="h-acct"><div class="sec-head"><h2 id="h-acct">החשבון</h2></div>' +
+      '<div class="set-actions"><button class="btn btn-quiet btn-small" data-act="password">שינוי סיסמה</button>' +
+      '<button class="btn btn-quiet btn-small" data-act="signout-others">יציאה מכל המכשירים האחרים</button>' +
+      '<button class="btn btn-danger btn-small" data-act="logout">יציאה</button></div></section></div>';
+    return html;
+  }
+
   /* ---------- rendering ---------- */
   function renderSync() {
     var el = $('#sync'), s, t;
-    if (S.status === 'connecting') { s = 'wait'; t = 'מתחבר…'; }
-    else if (S.status !== 'live') { s = 'off'; t = 'תצוגה בלבד'; }
+    if (S.status === 'auth') { s = 'off'; t = 'לא מחובר'; }
+    else if (S.status === 'connecting') { s = 'wait'; t = 'מתחבר…'; }
+    else if (S.status !== 'live') { s = 'off'; t = 'אין חיבור'; }
     else if (S.pending > 0) { s = 'saving'; t = 'שומר…'; }
-    else if (!canAct()) { s = 'ro'; t = 'צפייה בלבד'; }
     else { s = 'live'; t = 'מסונכרן'; }
     el.dataset.s = s; el.lastChild.textContent = t;
   }
@@ -771,14 +531,22 @@ dialog.sheet::backdrop{background:var(--scrim)}
   }
   function render(force) {
     if (S.followCur) S.monthKey = curKey();   // rolls over by itself on the reset day
+    document.body.classList.toggle('locked', S.status === 'auth');
     renderSync(); renderTabs();
-    // never rebuild the plan form under the person's fingers
+    if (S.status === 'auth') {
+      if (!force && $('[data-auth-form]')) return;   // keep what the person is typing
+      $('#app').innerHTML = viewAuth();
+      return;
+    }
+    // never rebuild a form under the person's fingers
     if (!force && S.tab === 'plan' && $('[data-plan-form]') && S.draft && S.draft.dirty) return;
-    var html = S.tab === 'history' ? viewHistory() : (S.tab === 'plan' ? viewPlan() : viewMonth());
+    if (!force && S.tab === 'settings' && $('[data-settings]')) return;
+    var html = S.tab === 'history' ? viewHistory() : (S.tab === 'plan' ? viewPlan() : (S.tab === 'settings' ? viewSettings() : viewMonth()));
     $('#app').innerHTML = html;
   }
   function setTab(t) {
     S.tab = t; render(true);
+    if (t === 'settings') loadSettings();
     try { window.scrollTo({ top: 0 }); } catch (e) { window.scrollTo(0, 0); }
   }
 
@@ -856,12 +624,10 @@ dialog.sheet::backdrop{background:var(--scrim)}
           var v = parseAmt(inp.value);
           if (!isFinite(v)) { err.textContent = 'יש להזין סכום במספרים.'; focusSoon(inp); return; }
           if (mode === 'add' && v === 0) { err.textContent = 'יש להזין סכום גדול מאפס.'; focusSoon(inp); return; }
-          var t = Math.round((mode === 'add' ? base() + v : v) * 100) / 100;
-          var log = sortedLog(S.months[k], x.id).concat([{ t: new Date().toISOString(), a: t }]).slice(-LOG_CAP);
-          var patch = { cards: {} }; patch.cards[x.id] = { log: log };
+          // "add" sends just the charge: the server adds it to the latest total, even one saved a moment ago on another phone
           btn.disabled = true;
-          var ok = await writeDoc('months/' + k, k, patch);
-          if (ok) { closeSheet(); toast(x.name + ' עודכן: ' + money(t)); } else btn.disabled = false;
+          var ok = await writeDoc('months/' + k, k, { card: { id: x.id, op: mode === 'add' ? 'add' : 'set', t: new Date().toISOString(), a: v, n: uid('u') } });
+          if (ok) { closeSheet(); toast(x.name + ' עודכן: ' + money(base())); } else btn.disabled = false;
         };
         btn.addEventListener('click', save); onEnter(inp, save);
         d.querySelectorAll('[data-del]').forEach(function (b) {
@@ -872,12 +638,7 @@ dialog.sheet::backdrop{background:var(--scrim)}
               return;
             }
             b.disabled = true;
-            var log = sortedLog(S.months[k], x.id), hit = -1;
-            for (var i = 0; i < log.length; i++) if (log[i].t === b.dataset.del && String(log[i].a) === b.dataset.a) { hit = i; break; }
-            if (hit < 0) { closeSheet(); return; }
-            log.splice(hit, 1);
-            var patch = { cards: {} }; patch.cards[x.id] = { log: log };
-            var ok = await writeDoc('months/' + k, k, patch);
+            var ok = await writeDoc('months/' + k, k, { card: { id: x.id, op: 'remove', t: b.dataset.del, a: Number(b.dataset.a) } });
             if (ok) { closeSheet(); toast('העדכון נמחק'); } else b.disabled = false;
           });
         });
@@ -902,7 +663,7 @@ dialog.sheet::backdrop{background:var(--scrim)}
         var put = async function (val, msg) {
           var patch = { income: {} }; patch.income[it.id] = val;
           btn.disabled = true;
-          var ok = await writeDoc('months/' + k, k, patch);
+          var ok = await writeDoc('months/' + k, k, { patch: patch });
           if (ok) { closeSheet(); toast(msg); } else btn.disabled = false;
         };
         var save = function () {
@@ -936,42 +697,99 @@ dialog.sheet::backdrop{background:var(--scrim)}
         d.querySelectorAll('[data-chip]').forEach(function (b) {
           b.addEventListener('click', function () { nm.value = b.dataset.chip; err.textContent = ''; focusSoon(amt); });
         });
-        var fresh = function () { return arr((S.months[k] || {}).extras).map(function (x) { return { id: x.id, name: x.name, amount: x.amount }; }); };
-        var write = async function (list, msg) {
+        var write = async function (change, msg) {
           btn.disabled = true;
-          var ok = await writeDoc('months/' + k, k, { extras: list });
+          var ok = await writeDoc('months/' + k, k, { extra: change });
           if (ok) { closeSheet(); toast(msg); } else btn.disabled = false;
         };
         var save = function () {
           var name = nm.value.trim(), v = parseAmt(amt.value);
           if (!name) { err.textContent = 'יש לכתוב תיאור.'; focusSoon(nm); return; }
           if (!isFinite(v) || v <= 0) { err.textContent = 'יש להזין סכום גדול מאפס.'; focusSoon(amt); return; }
-          var list = fresh();
-          if (ex) list = list.map(function (x) { return x.id === ex.id ? { id: x.id, name: name, amount: v } : x; });
-          else list.push({ id: uid('ex'), name: name, amount: v });
-          write(list, ex ? 'נשמר' : 'התשלום נוסף להכנסות של ' + mName(k));
+          write({ op: 'put', id: ex ? ex.id : uid('ex'), name: name, amount: v }, ex ? 'נשמר' : 'התשלום נוסף להכנסות של ' + mName(k));
         };
         btn.addEventListener('click', save); onEnter(amt, save); onEnter(nm, function () { focusSoon(amt); });
         [nm, amt].forEach(function (i) { i.addEventListener('input', function () { err.textContent = ''; }); });
         var del = d.querySelector('[data-delete]');
         if (del) del.addEventListener('click', function () {
           if (del.dataset.armed !== '1') { del.dataset.armed = '1'; del.textContent = 'ללחוץ שוב כדי למחוק'; return; }
-          write(fresh().filter(function (x) { return x.id !== ex.id; }), 'התשלום נמחק');
+          write({ op: 'remove', id: ex.id }, 'התשלום נמחק');
         });
         focusSoon(ex ? amt : nm);
       });
   }
 
-  /* ---------- storage: db, with a read-only local cache for when db is absent ---------- */
+  /* ---------- device storage: sign-in token, passkey flag, read-only copy of the data ---------- */
+  function lsGet(k, store) { try { return (store || localStorage).getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v, store) { try { (store || localStorage).setItem(k, v); } catch (e) {} }
+  function lsDel(k) { try { localStorage.removeItem(k); sessionStorage.removeItem(k); } catch (e) {} }
+  function bioInfo() { try { var b = JSON.parse(lsGet(BIO_KEY)); return b && b.email && b.id ? b : null; } catch (e) { return null; } }
+  // With a passkey on this device the token and the copy of the data live only until the app closes,
+  // so every open asks for the fingerprint and nothing stays on the phone in between.
+  function deviceStore() { try { return bioInfo() ? sessionStorage : localStorage; } catch (e) { return null; } }
+  function saveToken() {
+    lsDel(TOKEN_KEY);
+    var store = deviceStore();
+    if (S.token && store) lsSet(TOKEN_KEY, S.token, store);
+    if (S.token) saveCache();
+  }
+  function loadToken() { var s = null; try { s = sessionStorage; } catch (e) {} return (s && lsGet(TOKEN_KEY, s)) || lsGet(TOKEN_KEY); }
   function saveCache() {
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ plan: S.plan, months: S.months, at: new Date().toISOString() })); } catch (e) {}
+    var store = deviceStore(); if (!store) return;
+    lsDel(CACHE_KEY);
+    lsSet(CACHE_KEY, JSON.stringify({ email: S.user && S.user.email, plan: S.plan, months: S.months, at: new Date().toISOString() }), store);
+  }
+  function readCache() {
+    var s = null; try { s = sessionStorage; } catch (e) {}
+    try { return JSON.parse((s && lsGet(CACHE_KEY, s)) || lsGet(CACHE_KEY) || 'null'); } catch (e) { return null; }
   }
   function loadCache() {
+    var c = readCache();
+    if (c && typeof c === 'object') { S.plan = c.plan || null; S.months = (c.months && typeof c.months === 'object') ? c.months : {}; }
+  }
+
+  /* ---------- server ---------- */
+  async function call(method, path, data) {
+    var opts = { method: method, headers: {} };
+    if (S.token) opts.headers.authorization = 'Bearer ' + S.token;
+    if (data !== undefined) { opts.headers['content-type'] = 'application/json'; opts.body = JSON.stringify(data); }
+    var res, out = null;
+    try { res = await fetch('/api/' + path, opts); } catch (e) { throw { code: 'network', message: 'אין חיבור לאינטרנט. נסו שוב בעוד רגע.' }; }
+    try { out = await res.json(); } catch (e) {}
+    if (!res.ok) {
+      var err = { code: (out && out.error) || 'http', status: res.status, message: (out && out.message) || 'משהו השתבש. נסו שוב בעוד רגע.' };
+      if (err.code === 'auth') signedOut('צריך להיכנס שוב.');
+      throw err;
+    }
+    return out || {};
+  }
+
+  var pollTimer = null;
+  async function refresh() {
+    if (!S.token) return;
     try {
-      var raw = localStorage.getItem(CACHE_KEY); if (!raw) return;
-      var c = JSON.parse(raw);
-      if (c && typeof c === 'object') { S.plan = c.plan || null; S.months = (c.months && typeof c.months === 'object') ? c.months : {}; }
-    } catch (e) {}
+      var r = await call('GET', 'data' + (S.rev ? '?rev=' + encodeURIComponent(S.rev) : ''));
+      if (!S.token) return;
+      var was = S.status;
+      if (!r.unchanged && !S.pending) { S.plan = r.plan || null; S.months = r.months || {}; S.rev = r.rev; saveCache(); }
+      S.status = 'live';
+      if (!r.unchanged || was !== 'live') render(was !== 'live' && S.tab !== 'plan');
+    } catch (e) {
+      if (e.code === 'auth' || !S.token) return;
+      if (S.status !== 'offline') { S.status = 'offline'; closeSheet(); render(S.tab !== 'plan'); }
+    }
+  }
+  var lastTouch = Date.now();
+  function poll() {
+    clearTimeout(pollTimer);
+    if (!S.token || document.hidden || Date.now() - lastTouch > IDLE_MS) return;
+    pollTimer = setTimeout(function () { refresh().then(poll); }, S.status === 'offline' ? 2 * POLL_MS : POLL_MS);
+  }
+  // a touch after a quiet spell fetches right away and resumes polling
+  function touched() {
+    var idle = Date.now() - lastTouch > IDLE_MS;
+    lastTouch = Date.now();
+    if (idle && S.token && !document.hidden) refresh().then(poll);
   }
 
   var queues = {};
@@ -982,98 +800,315 @@ dialog.sheet::backdrop{background:var(--scrim)}
     return run;
   }
   function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  // Every write sends whole values (a full card log, the full extras list), so one retry is safe.
   async function withRetry(fn) {
     try { return await fn(); }
     catch (e) {
-      if (e && e.code === 'unavailable') { await sleep(300 + Math.random() * 700); return await fn(); }
+      if (e && (e.code === 'network' || e.status >= 500)) { await sleep(300 + Math.random() * 700); return await fn(); }
       throw e;
     }
   }
-  // monthKey given -> month doc (create with set when missing, else merge with update)
-  async function writeDoc(path, monthKey, patch) {
-    if (!canAct() || !S.db) { toast('אי אפשר לשמור מכאן כרגע.'); return false; }
-    var ref = S.db.doc(path);
+  // change: { patch } for the plan (replaced whole) or a month's income overrides; { card } or { extra } for one
+  // card update or one extra payment. The server applies it to the stored doc and sends the doc back.
+  async function writeDoc(path, monthKey, change) {
+    if (!canAct()) { toast('אי אפשר לשמור כרגע.'); return false; }
     S.pending++; renderSync();
     try {
-      await enqueue(path, function () {
-        return withRetry(async function () {
-          if (!monthKey) { await ref.set(patch); return; }
-          var snap = await ref.get();
-          if (snap.exists) await ref.update(patch);
-          else { var body = clone(patch); body.month = monthKey; await ref.set(body); }
-        });
+      var r = await enqueue(path, function () {
+        return withRetry(function () { return call('POST', 'doc', Object.assign({ path: path }, change)); });
       });
+      if (monthKey) S.months[monthKey] = r.doc; else S.plan = r.doc;
+      S.rev = null; saveCache();
       return true;
     } catch (e) {
       writeFailed(e);
       return false;
     } finally {
-      S.pending--; renderSync();
+      S.pending--; render();
     }
   }
   function writeFailed(e) {
-    var code = e && e.code;
-    if (code === 'invalid_argument' && S.canWrite !== true) {
-      S.refused = true; closeSheet(); toast('אין הרשאה לשמור שינויים בדף הזה.'); render(true);
-    } else if (code === 'quota_exceeded') {
-      toast('אין מקום לשמור עוד נתונים. אפשר למחוק עדכוני אשראי ישנים ולנסות שוב.');
-    } else if (code === 'revoked') {
-      S.status = 'revoked'; closeSheet(); render(true);
-    } else if (code === 'not_granted' || code === 'capability_disabled' || code === 'capability_removed') {
-      S.status = 'nodb'; closeSheet(); render(true);
-    } else {
-      toast('השמירה לא הצליחה. נסו שוב בעוד רגע.');
+    if (e && e.code === 'auth') return;
+    toast(e && e.status >= 400 && e.status < 500 && e.message ? e.message : 'השמירה לא הצליחה. נסו שוב בעוד רגע.');
+  }
+
+  /* ---------- signing in and out ---------- */
+  async function signedIn(r, how) {
+    S.token = r.token; S.user = r.user; saveToken();
+    var c = readCache();
+    if (c && c.email === S.user.email) loadCache(); else { S.plan = null; S.months = {}; lsDel(CACHE_KEY); }
+    S.rev = null; S.status = 'connecting'; S.tab = 'month'; S.followCur = true; S.authView = 'login';
+    render(true);
+    await refresh(); poll();
+    pushCheck(true);
+    if (how === 'password') offerBio();
+  }
+  function signedOut(msg) {
+    clearTimeout(pollTimer);
+    S.token = null; S.user = null; S.plan = null; S.months = {}; S.rev = null; S.draft = null;
+    S.members = null; S.newCode = null; S.status = 'auth'; S.tab = 'month';
+    lsDel(TOKEN_KEY); lsDel(CACHE_KEY);
+    closeSheet(); render(true);
+    if (msg) toast(msg);
+  }
+  // Signing out forgets this device: its notifications and its fingerprint sign-in go too.
+  async function logout() {
+    try {
+      var reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.getRegistration() : null;
+      var sub = reg && reg.pushManager ? await reg.pushManager.getSubscription() : null;
+      if (sub) { await call('POST', 'push/unsubscribe', { endpoint: sub.endpoint }).catch(function () {}); await sub.unsubscribe(); }
+    } catch (e) {}
+    var bio = bioInfo();
+    if (bio) await call('POST', 'passkey/remove', { id: bio.id }).catch(function () {});
+    lsDel(BIO_KEY);
+    S.push = null;
+    signedOut();
+  }
+  async function signOutOthers(btn) {
+    btn.disabled = true;
+    try {
+      var r = await call('POST', 'signout-others');
+      S.token = r.token; S.user = r.user; saveToken();
+      toast('יצאת מכל המכשירים האחרים');
+    } catch (e) { toast(e.message); }
+    btn.disabled = false;
+  }
+  async function removePasskey(id, btn) {
+    btn.disabled = true;
+    try {
+      var r = await call('POST', 'passkey/remove', { id: id }); S.user = r.user;
+      var bio = bioInfo(); if (bio && bio.id === id) { lsDel(BIO_KEY); saveToken(); }
+      toast('הוסר'); render(true);
+    } catch (e) { btn.disabled = false; toast(e.message); }
+  }
+  async function submitAuth(form) {
+    var err = form.querySelector('[data-err]'), btn = form.querySelector('[type="submit"]');
+    var f = function (n) { return form.elements[n] ? form.elements[n].value : ''; };
+    var join = form.dataset.kind === 'join';
+    if (!f('email').trim()) { err.textContent = 'יש לכתוב אימייל.'; focusSoon(form.elements.email); return; }
+    if (join && !/^\d{6}$/.test(f('code').trim())) { err.textContent = 'הקוד הוא 6 ספרות.'; focusSoon(form.elements.code); return; }
+    if (!f('password')) { err.textContent = 'יש לכתוב סיסמה.'; focusSoon(form.elements.password); return; }
+    if (join && f('password').length < 8) { err.textContent = 'הסיסמה צריכה להיות באורך 8 תווים לפחות.'; focusSoon(form.elements.password); return; }
+    err.textContent = ''; btn.disabled = true;
+    try {
+      var r = await call('POST', join ? 'join' : 'login', join
+        ? { email: f('email'), code: f('code'), password: f('password') }
+        : { email: f('email'), password: f('password') });
+      await signedIn(r, 'password');
+    } catch (e) {
+      err.textContent = e.message; btn.disabled = false;
     }
   }
 
-  var subs = { plan: null, months: null }, resubs = 0;
-  function subscribe(which) {
-    var db = S.db; if (!db) return;
-    if (which !== 'months') {
-      if (subs.plan) subs.plan();
-      subs.plan = db.doc('budget/plan').onSnapshot(function (snap) {
-        if (!snap.exists && snap.metadata && snap.metadata.fromCache && S.status === 'connecting') return;
-        S.plan = snap.exists ? clone(snap.data()) : null;
-        S.status = 'live'; saveCache(); render();
-      }, function (err) { subError(err, 'plan'); });
+  /* ---------- passkeys: fingerprint or face ---------- */
+  function b64u(buf) {
+    var u = new Uint8Array(buf), s = '';
+    for (var i = 0; i < u.length; i++) s += String.fromCharCode(u[i]);
+    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function unb64u(str) {
+    var s = String(str).replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    var bin = atob(s), u = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    return u.buffer;
+  }
+  function credList(list) { return (list || []).map(function (c) { return Object.assign({}, c, { id: unb64u(c.id) }); }); }
+  function credJSON(c) {
+    var r = c.response;
+    var out = { id: c.id, rawId: b64u(c.rawId), type: c.type, response: { clientDataJSON: b64u(r.clientDataJSON) },
+      clientExtensionResults: c.getClientExtensionResults ? c.getClientExtensionResults() : {} };
+    if (c.authenticatorAttachment) out.authenticatorAttachment = c.authenticatorAttachment;
+    if (r.attestationObject) {
+      out.response.attestationObject = b64u(r.attestationObject);
+      if (r.getTransports) out.response.transports = r.getTransports();
     }
-    if (which !== 'plan') {
-      if (subs.months) subs.months();
-      subs.months = db.collection('months').onSnapshot(function (qs) {
-        if (qs.empty && qs.metadata && qs.metadata.fromCache && S.status === 'connecting') return;
-        var m = {};
-        qs.docs.forEach(function (d) { if (d.exists) m[d.id] = clone(d.data()); });
-        S.months = m; S.status = 'live'; saveCache(); render();
-      }, function (err) { subError(err, 'months'); });
+    if (r.authenticatorData) {
+      out.response.authenticatorData = b64u(r.authenticatorData);
+      out.response.signature = b64u(r.signature);
+      if (r.userHandle) out.response.userHandle = b64u(r.userHandle);
+    }
+    return out;
+  }
+  async function bioCheck() {
+    try {
+      S.bioAvail = !!(window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable &&
+        await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
+    } catch (e) { S.bioAvail = false; }
+  }
+  function bioCancelled(e) { return e && (e.name === 'NotAllowedError' || e.name === 'AbortError'); }
+  async function bioLogin(btn) {
+    var info = bioInfo(), err = $('[data-auth-form] [data-err]');
+    if (btn) btn.disabled = true;
+    try {
+      var o = await call('POST', 'passkey/options', { kind: 'login', credId: info && info.id });
+      var opt = Object.assign({}, o.options, { challenge: unb64u(o.options.challenge), allowCredentials: credList(o.options.allowCredentials) });
+      var cred = await navigator.credentials.get({ publicKey: opt });
+      var r = await call('POST', 'passkey/login', { ticket: o.ticket, response: credJSON(cred) });
+      lsSet(BIO_KEY, JSON.stringify({ email: r.user.email, id: cred.id }));
+      await signedIn(r, 'passkey');
+    } catch (e) {
+      if (e && e.code === 'unknown_passkey') { lsDel(BIO_KEY); render(true); toast(e.message); return; }
+      if (err) err.textContent = bioCancelled(e) ? 'הכניסה בוטלה. אפשר לנסות שוב או להיכנס עם סיסמה.' : (e && e.message) || 'הכניסה לא הצליחה. נסו שוב או היכנסו עם סיסמה.';
+      if (btn) btn.disabled = false;
     }
   }
-  function subError(err, which) {
-    var code = err && err.code;
-    if (code === 'revoked') { S.status = 'revoked'; render(true); return; }
-    if (code === 'unavailable' && resubs < 5) { resubs++; setTimeout(function () { subscribe(which); }, 1500 + Math.random() * 2500); return; }
-    if (code === 'not_granted' || code === 'capability_disabled' || code === 'capability_removed') { S.status = 'nodb'; render(true); return; }
-    toast('הטעינה נתקעה. רענון הדף אמור לפתור את זה.');
+  async function bioEnable() {
+    try {
+      var o = await call('POST', 'passkey/options', { kind: 'register' });
+      var opt = Object.assign({}, o.options, {
+        challenge: unb64u(o.options.challenge),
+        user: Object.assign({}, o.options.user, { id: unb64u(o.options.user.id) }),
+        excludeCredentials: credList(o.options.excludeCredentials)
+      });
+      var cred = await navigator.credentials.create({ publicKey: opt });
+      var r = await call('POST', 'passkey/register', { ticket: o.ticket, response: credJSON(cred) });
+      S.user = r.user;
+      lsSet(BIO_KEY, JSON.stringify({ email: S.user.email, id: r.id }));
+      saveToken();   // from now on the token lasts until the app closes
+      toast('הכניסה הביומטרית הופעלה במכשיר הזה');
+      return true;
+    } catch (e) {
+      if (e && e.name === 'InvalidStateError') toast('כבר יש כניסה ביומטרית רשומה במכשיר הזה. כבו אותה והפעילו שוב.');
+      else toast(bioCancelled(e) ? 'ההפעלה בוטלה.' : (e && e.message) || 'ההפעלה לא הצליחה. נסו שוב.');
+      return false;
+    }
+  }
+  async function bioDisable() {
+    var info = bioInfo();
+    if (info) {
+      try { var r = await call('POST', 'passkey/remove', { id: info.id }); S.user = r.user; }
+      catch (e) { if (e.code === 'auth') return; }
+    }
+    lsDel(BIO_KEY); saveToken();
+    toast('הכניסה הביומטרית כובתה במכשיר הזה');
+  }
+  function offerBio() {
+    if (!S.bioAvail || bioInfo() || lsGet(BIO_SKIP_KEY)) return;
+    openSheet(head('כניסה מהירה', 'בפעם הבאה אפשר להיכנס עם טביעת אצבע או זיהוי פנים, בלי סיסמה.') +
+      '<p class="hint">האפליקציה תבקש אישור בכל פתיחה במכשיר הזה. אפשר לשנות את זה בכל רגע בלשונית ההגדרות.</p>' +
+      '<button class="btn btn-primary btn-block" data-yes>להפעיל</button>' +
+      '<button class="btn btn-quiet btn-block" data-no>לא עכשיו</button>',
+      function (d) {
+        d.querySelector('[data-yes]').addEventListener('click', async function (e) {
+          e.target.disabled = true;
+          if (await bioEnable()) closeSheet(); else e.target.disabled = false;
+        });
+        d.querySelector('[data-no]').addEventListener('click', function () { lsSet(BIO_SKIP_KEY, '1'); closeSheet(); });
+      });
+  }
+
+  /* ---------- push notifications ---------- */
+  function isIOS() { return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+  function standalone() { return navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches); }
+  // relink: tell the server this device's subscription belongs to whoever just signed in
+  async function pushCheck(relink) {
+    var st;
+    try {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) st = isIOS() && !standalone() ? 'ios-home' : 'unsupported';
+      else if (Notification.permission === 'denied') st = 'denied';
+      else {
+        var reg = await navigator.serviceWorker.getRegistration();
+        var sub = reg ? await reg.pushManager.getSubscription() : null;
+        st = sub && Notification.permission === 'granted' ? 'on' : 'off';
+        if (sub && relink && S.token) call('POST', 'push/subscribe', { subscription: sub.toJSON() }).catch(function () {});
+      }
+    } catch (e) { st = 'unsupported'; }
+    S.push = st;
+    if (S.tab === 'settings') render(true);
+  }
+  async function pushEnable() {
+    try {
+      var perm = await Notification.requestPermission();
+      if (perm !== 'granted') { toast(perm === 'denied' ? 'ההתראות נחסמו בדפדפן.' : 'ההתראות לא הופעלו.'); return pushCheck(); }
+      var reg = await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.ready;
+      var k = await call('GET', 'push/key');
+      var sub = await reg.pushManager.getSubscription() ||
+        await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: new Uint8Array(unb64u(k.key)) });
+      await call('POST', 'push/subscribe', { subscription: sub.toJSON() });
+      toast('ההתראות הופעלו במכשיר הזה');
+    } catch (e) {
+      toast((e && e.message && e.code) ? e.message : 'לא הצלחנו להפעיל התראות במכשיר הזה.');
+    }
+    return pushCheck();
+  }
+  async function pushDisable() {
+    try {
+      var reg = await navigator.serviceWorker.getRegistration();
+      var sub = reg ? await reg.pushManager.getSubscription() : null;
+      if (sub) { await call('POST', 'push/unsubscribe', { endpoint: sub.endpoint }).catch(function () {}); await sub.unsubscribe(); }
+      toast('ההתראות כובו במכשיר הזה');
+    } catch (e) { toast('לא הצלחנו לכבות את ההתראות.'); }
+    return pushCheck();
+  }
+  async function pushTest(btn) {
+    btn.disabled = true;
+    try {
+      var r = await call('POST', 'push/test');
+      toast(r.sent ? 'נשלחה התראת ניסיון' : 'לא נמצא מכשיר פעיל להתראות. כבו והפעילו שוב.');
+    } catch (e) { toast(e.message); }
+    btn.disabled = false;
+  }
+
+  /* ---------- settings actions ---------- */
+  async function loadSettings() {
+    pushCheck();
+    if (S.user && S.user.role === 'owner') {
+      try { S.members = (await call('GET', 'members')).members; } catch (e) { return; }
+      if (S.tab === 'settings') render(true);
+    }
+  }
+  async function memberAction(kind, email, btn) {
+    if (btn) btn.disabled = true;
+    try {
+      if (kind === 'add') S.newCode = await call('POST', 'members', { email: email });
+      else if (kind === 'code') S.newCode = await call('POST', 'members/code', { email: email });
+      else { await call('POST', 'members/remove', { email: email }); if (S.newCode && S.newCode.email === email) S.newCode = null; toast('הוסר מהרשימה'); }
+      S.members = (await call('GET', 'members')).members;
+      render(true);
+      return true;
+    } catch (e) {
+      if (btn) btn.disabled = false;
+      var err = $('[data-add-member] + [data-err]');
+      if (kind === 'add' && err) err.textContent = e.message; else toast(e.message);
+      return false;
+    }
+  }
+  function openPasswordSheet() {
+    openSheet(head('שינוי סיסמה', 'אחרי השינוי, במכשירים אחרים צריך להיכנס שוב.') +
+      '<form data-pw novalidate>' +
+      '<label class="field"><span class="field-label">הסיסמה הנוכחית</span><input class="input" type="password" name="current" autocomplete="current-password" dir="ltr"></label>' +
+      '<label class="field"><span class="field-label">סיסמה חדשה (8 תווים לפחות)</span><input class="input" type="password" name="next" autocomplete="new-password" dir="ltr"></label>' +
+      '<p class="field-err" data-err role="alert"></p>' +
+      '<button class="btn btn-primary btn-block" type="submit">שמירה</button></form>',
+      function (d) {
+        var form = d.querySelector('[data-pw]'), err = d.querySelector('[data-err]');
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          if (form.elements.next.value.length < 8) { err.textContent = 'הסיסמה החדשה צריכה להיות באורך 8 תווים לפחות.'; return; }
+          var btn = form.querySelector('[type="submit"]'); btn.disabled = true;
+          try {
+            var r = await call('POST', 'password', { current: form.elements.current.value, next: form.elements.next.value });
+            S.token = r.token; S.user = r.user; saveToken();
+            closeSheet(); toast('הסיסמה עודכנה');
+          } catch (x) { err.textContent = x.message; btn.disabled = false; }
+        });
+        focusSoon(form.elements.current);
+      });
   }
 
   async function init() {
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
+    await bioCheck();
+    S.token = loadToken();
+    if (!S.token) { S.status = 'auth'; render(true); return; }
     loadCache();
     render(true);
-    var api = (window.claude && typeof window.claude.use === 'function') ? window.claude : null;
-    if (!api) { S.status = 'nodb'; render(true); return; }
-    var db = null, user = null;
-    try {
-      var res = await Promise.all([
-        api.use('db').catch(function () { return null; }),
-        api.use('user').catch(function () { return null; })
-      ]);
-      db = res[0]; user = res[1];
-    } catch (e) { db = null; }
-    if (!db) { S.status = 'nodb'; render(true); return; }
-    S.db = db;
-    if (user && typeof user.can === 'function') {
-      try { S.canWrite = await user.can('data.write'); } catch (e) { S.canWrite = null; }
-    }
-    subscribe();
+    try { S.user = (await call('GET', 'me')).user; }
+    catch (e) { if (e.code === 'auth') return; }
+    await refresh(); poll();
+    pushCheck(false);
   }
 
   /* ---------- events ---------- */
@@ -1087,6 +1122,25 @@ dialog.sheet::backdrop{background:var(--scrim)}
     }
     if (a === 'today') { S.followCur = true; return render(true); }
     if (a === 'goto') { S.monthKey = t.dataset.k; S.followCur = S.monthKey === curKey(); return setTab('month'); }
+    if (a === 'auth-view') { S.authView = t.dataset.view; return render(true); }
+    if (a === 'bio-login') return bioLogin(t);
+    if (a === 'bio-on') { t.disabled = true; return bioEnable().then(function () { render(true); }); }
+    if (a === 'bio-off') { t.disabled = true; return bioDisable().then(function () { render(true); }); }
+    if (a === 'push-on') { t.disabled = true; return pushEnable(); }
+    if (a === 'push-off') { t.disabled = true; return pushDisable(); }
+    if (a === 'push-test') return pushTest(t);
+    if (a === 'mem-code') return memberAction('code', t.dataset.email, t);
+    if (a === 'mem-remove') {
+      if (t.dataset.armed !== '1') { t.dataset.armed = '1'; t.textContent = 'להסיר?'; return; }
+      return memberAction('remove', t.dataset.email, t);
+    }
+    if (a === 'password') return openPasswordSheet();
+    if (a === 'signout-others') return signOutOthers(t);
+    if (a === 'pk-remove') {
+      if (t.dataset.armed !== '1') { t.dataset.armed = '1'; t.textContent = 'להסיר?'; return; }
+      return removePasskey(t.dataset.id, t);
+    }
+    if (a === 'logout') return logout();
     if (!canAct()) return;
     if (a === 'card') return openCardSheet(t.dataset.id);
     if (a === 'income') return openIncomeSheet(t.dataset.id);
@@ -1115,11 +1169,26 @@ dialog.sheet::backdrop{background:var(--scrim)}
     row[t.dataset.f] = t.value; S.draft.dirty = true; t.removeAttribute('aria-invalid');
     refreshPlanTotals();
   });
-  // keep "today" honest if the page stays open across midnight
-  document.addEventListener('visibilitychange', function () { if (!document.hidden && S.tab !== 'plan') render(); });
+  document.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (f.matches('[data-auth-form]')) { e.preventDefault(); return submitAuth(f); }
+    if (f.matches('[data-add-member]')) {
+      e.preventDefault();
+      var email = f.elements.email.value.trim(), err = f.nextElementSibling;
+      if (!email) { err.textContent = 'יש לכתוב אימייל.'; focusSoon(f.elements.email); return; }
+      err.textContent = '';
+      return memberAction('add', email, f.querySelector('[type="submit"]'));
+    }
+  });
+  // poll only while the app is on screen; on return, fetch right away (and keep "today" honest after midnight)
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { clearTimeout(pollTimer); return; }
+    lastTouch = Date.now();
+    if (S.tab !== 'plan') render();
+    if (S.token) refresh().then(poll);
+  });
+  document.addEventListener('pointerdown', touched, true);
+  document.addEventListener('keydown', touched, true);
 
   init();
 })();
-</script>
-</body>
-</html>

@@ -1,5 +1,3 @@
-__pycache__/
-.pytest_cache/
 tests/__screenshots__/
 .DS_Store
 
@@ -7,3 +5,9 @@ tests/__screenshots__/
 *.xlsx
 *.xls
 *.csv
+
+# Node and Netlify
+node_modules/
+.netlify/
+test-results/
+playwright-report/
