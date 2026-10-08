@@ -10,7 +10,7 @@ Tzahi owns the app. He is an engineer and project manager, not a software develo
 
 - `public/index.html` — markup and CSS. `public/app.js` — the page logic (one IIFE). No build step. Keep scripts out of the HTML: the CSP allows only `script-src 'self'`.
 - `public/core.js` — the budget math (cycle, plan versions, `compute`, the notification text). UMD: the page loads it as `window.BudgetCore`, the server imports it. Change the math here, once.
-- `public/sw.js`, `public/manifest.webmanifest`, `public/*.png` — service worker (shows push notifications, caches nothing), install manifest, icons (`node dev/icons.mjs` redraws them).
+- `public/sw.js`, `public/manifest.webmanifest`, `public/*.png` — service worker (shows push notifications, caches nothing), install manifest, icons: a gold ₪ coin over "Mor" (`node dev/icons.mjs` redraws them). On the home screen the app is called "Mor" (`short_name`, `apple-mobile-web-app-title`).
 - `lib/api.mjs` — the whole server: `createApi({ kv, push, now }).handle(Request)`. `lib/auth.mjs` (scrypt, codes, signed tokens), `lib/kv.mjs` (Blobs and in-memory stores, `mutate()`), `lib/push.mjs` (web-push).
 - `netlify/functions/api.mjs` — serves `/api/*`. `netlify/functions/notify.mjs` — scheduled hourly; sends at 19:00 Israel time when three days have passed since the last send.
 - `dev/live.mjs` — maintenance against the live store with the Netlify CLI sign-in: a new join code for an email, or a one-time import into an empty store.
@@ -97,6 +97,8 @@ Read or fix live data only when Tzahi asks: `netlify blobs:get budget <key>` / `
 
 ## Testing
 
+The repo pins LF line endings (`.gitattributes`); keep them, since edits match text across lines.
+
 ```
 npm install
 npx playwright install chromium   # only if Chromium is missing
@@ -114,6 +116,7 @@ npm run screenshots                # PNGs in tests/__screenshots__/
 - Color tokens on `:root`, with dark-mode overrides. Navy month card; amber for credit cards; green for surplus; red for deficit and overspending.
 - Mobile first: it must work at 360px wide with the bottom tab bar, without horizontal scrolling.
 - iPhone push needs the app added to the home screen (iOS 16.4+); Settings explains this when it detects Safari in a tab.
+- Install card (`renderInstall` in app.js): on phones in the browser, a card under the header offers to save Mor to the home screen — Chrome's own install prompt when it fires `beforeinstallprompt`, otherwise instructions (Safari's share button, or the browser menu). It never shows when the app runs from its icon (`display-mode: standalone` / `navigator.standalone`), after an install, or for 14 days after the × .
 
 ## Settled with Tzahi
 

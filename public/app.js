@@ -10,6 +10,7 @@
   var TOKEN_KEY = 'mor-budget-token';
   var BIO_KEY = 'mor-budget-bio';          // { email, id } once this device signs in with a passkey
   var BIO_SKIP_KEY = 'mor-budget-bio-skip';
+  var INSTALL_KEY = 'mor-budget-install';   // 'installed', or the time until which the card stays hidden
   var POLL_MS = 15000;
   var IDLE_MS = 5 * 60000;                  // stop polling after 5 minutes without a touch
   var nf = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
@@ -40,7 +41,8 @@
     plus: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
     pen: '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg>',
     trash: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V5h4v2M7 7l1 12.5h8L17 7"/></svg>',
-    x: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+    x: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    share: '<svg viewBox="0 0 24 24" width="17" height="17" aria-label="שיתוף" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v9h14v-9h-1"/></svg>'
   };
 
   /* ---------- small helpers ---------- */
@@ -1051,6 +1053,36 @@
     btn.disabled = false;
   }
 
+  /* ---------- install to the home screen ---------- */
+  // A card on phones that opened the app in the browser. Opened from the home-screen icon (standalone), it never shows.
+  var installEvt = null;
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); installEvt = e; renderInstall(); });
+  window.addEventListener('appinstalled', function () { installEvt = null; lsSet(INSTALL_KEY, 'installed'); renderInstall(); });
+  function isPhone() { return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || isIOS(); }
+  function wantInstall() {
+    if (standalone() || !isPhone()) return false;
+    var h = lsGet(INSTALL_KEY);
+    return !(h === 'installed' || (h && Number(h) > Date.now()));
+  }
+  function renderInstall() {
+    var el = $('#install');
+    if (!wantInstall()) { el.hidden = true; el.innerHTML = ''; return; }
+    var how = installEvt ? 'אייקון במסך הבית שנפתח ישר לתקציב, במסך מלא.'
+      : (isIOS() ? 'לוחצים על ' + ICON.share + ' (שיתוף) ובוחרים "הוספה למסך הבית".'
+        : 'בתפריט הדפדפן (⋮) בוחרים "הוספה למסך הבית" או "התקנת אפליקציה".');
+    el.innerHTML = '<img src="/icon-192.png" alt="">' +
+      '<div class="install-text"><b>שמירת Mor בטלפון</b>' + how + '</div>' +
+      (installEvt ? '<button class="btn btn-primary btn-small" data-act="install">התקנה</button>' : '') +
+      '<button class="x" data-act="install-hide" aria-label="הסתרה">' + ICON.x + '</button>';
+    el.hidden = false;
+  }
+  async function install() {
+    if (!installEvt) return;
+    var e = installEvt; installEvt = null;
+    try { e.prompt(); var r = await e.userChoice; if (r && r.outcome === 'accepted') lsSet(INSTALL_KEY, 'installed'); } catch (x) {}
+    renderInstall();
+  }
+
   /* ---------- settings actions ---------- */
   async function loadSettings() {
     pushCheck();
@@ -1100,6 +1132,7 @@
 
   async function init() {
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
+    renderInstall();
     await bioCheck();
     S.token = loadToken();
     if (!S.token) { S.status = 'auth'; render(true); return; }
@@ -1124,6 +1157,8 @@
     if (a === 'goto') { S.monthKey = t.dataset.k; S.followCur = S.monthKey === curKey(); return setTab('month'); }
     if (a === 'auth-view') { S.authView = t.dataset.view; return render(true); }
     if (a === 'bio-login') return bioLogin(t);
+    if (a === 'install') return install();
+    if (a === 'install-hide') { lsSet(INSTALL_KEY, String(Date.now() + 14 * 864e5)); return renderInstall(); }
     if (a === 'bio-on') { t.disabled = true; return bioEnable().then(function () { render(true); }); }
     if (a === 'bio-off') { t.disabled = true; return bioDisable().then(function () { render(true); }); }
     if (a === 'push-on') { t.disabled = true; return pushEnable(); }

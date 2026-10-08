@@ -1,6 +1,8 @@
 {
   "name": "התקציב של משפחת מור",
-  "short_name": "תקציב מור",
+  "short_name": "Mor",
+  "id": "/",
+  "description": "תכנון ומעקב של התקציב החודשי של משפחת מור",
   "lang": "he",
   "dir": "rtl",
   "start_url": "/",

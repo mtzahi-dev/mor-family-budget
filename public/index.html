@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#16314B">
 <meta name="referrer" content="no-referrer">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="תקציב מור">
+<meta name="apple-mobile-web-app-title" content="Mor">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icon-192.png" type="image/png">
@@ -222,6 +222,15 @@ dialog.sheet::backdrop{background:var(--scrim)}
 .link-danger{background:none;border:0;color:var(--over);font-size:13.5px;font-weight:500;min-height:36px;padding:0 4px;cursor:pointer}
 .link-danger[data-armed="1"]{font-weight:700;text-decoration:underline}
 
+/* install to the home screen (phones, in the browser only) */
+.install{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px 10px 10px 12px;margin:0 0 14px;box-shadow:var(--shadow)}
+.install[hidden]{display:none}
+.install img{width:44px;height:44px;border-radius:11px;flex:none}
+.install-text{flex:1;min-width:0;font-size:13.5px;line-height:1.4;color:var(--ink-2)}
+.install-text b{display:block;font-size:15px;color:var(--ink)}
+.install-text svg{vertical-align:-3px}
+.install .x{width:36px;height:36px}
+
 /* sign-in */
 .auth{max-width:400px;margin:18px auto 0}
 .auth .lead{margin-bottom:6px}
@@ -274,6 +283,7 @@ dialog.sheet::backdrop{background:var(--scrim)}
     <h1 class="brand">התקציב של משפחת מור</h1>
     <div class="sync" id="sync" data-s="wait" role="status" aria-live="polite"><i></i><span>מתחבר…</span></div>
   </header>
+  <aside class="install" id="install" hidden></aside>
   <main id="app"></main>
 </div>
 

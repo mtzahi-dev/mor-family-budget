@@ -1,6 +1,6 @@
 // Renders the main screens to tests/__screenshots__/ for a visual check:  npm run screenshots
 // Uses the fictional demo data. Fonts load from Google Fonts when the network allows it.
-import { chromium } from '@playwright/test';
+import { chromium, devices } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { DEMO_DOCS, local } from '../dev/demo.mjs';
@@ -8,8 +8,10 @@ import { OWNER, login, serve } from './fixtures.mjs';
 
 const OUT = fileURLToPath(new URL('./__screenshots__/', import.meta.url));
 
-async function shoot(browser, server, name, prepare, { width = 390, height = 844, dark = false, signedIn = true } = {}) {
-  const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2,
+// device: a Playwright device (phone user agent, touch), to show what only phones see
+async function shoot(browser, server, name, prepare, { width = 390, height = 844, dark = false, signedIn = true, device } = {}) {
+  const phone = device ? (({ userAgent, viewport, isMobile, hasTouch }) => ({ userAgent, viewport, isMobile, hasTouch }))(device) : { viewport: { width, height } };
+  const context = await browser.newContext({ ...phone, deviceScaleFactor: 2,
     colorScheme: dark ? 'dark' : 'light', locale: 'he-IL', timezoneId: 'Asia/Jerusalem' });
   const page = await context.newPage();
   const errors = [];
@@ -52,5 +54,7 @@ await shoot(browser, server, 'settings', async (page) => {
   await page.waitForTimeout(300);
 });
 await shoot(browser, server, 'settings-dark', tab('settings'), { dark: true });
+await shoot(browser, server, 'install-android', null, { device: devices['Pixel 7'] });
+await shoot(browser, server, 'install-iphone', null, { device: devices['iPhone 13'], signedIn: false });
 await browser.close();
 await server.close();
