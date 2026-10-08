@@ -1,0 +1,9 @@
+__pycache__/
+.pytest_cache/
+tests/__screenshots__/
+.DS_Store
+
+# Spreadsheets hold the family's real numbers; they never go into git.
+*.xlsx
+*.xls
+*.csv
